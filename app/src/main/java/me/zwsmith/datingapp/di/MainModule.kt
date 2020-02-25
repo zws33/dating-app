@@ -12,7 +12,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 val mainModule = module {
-    single { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY } }
+    single { HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC } }
     single { client(get()) }
     single { retrofit(get()) }
     single { matchesService(get()) }

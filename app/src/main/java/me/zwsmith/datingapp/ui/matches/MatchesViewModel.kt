@@ -3,6 +3,11 @@ package me.zwsmith.datingapp.ui.matches
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import me.zwsmith.datingapp.data.MatchesResponse
 import me.zwsmith.datingapp.domain.Repository
 
 class MatchesViewModel(private val matchesRepository: Repository) : ViewModel() {
@@ -11,16 +16,26 @@ class MatchesViewModel(private val matchesRepository: Repository) : ViewModel() 
     private val _viewStates = MutableLiveData<List<MatchItemViewState>>()
 
     fun loadMatches() {
-        _viewStates.value = (0..5).map {
-            MatchItemViewState(
-                username = "asianbluedust",
-                age = "29",
-                city = "Teaneck",
-                stateCode = "NJ",
-                matchPercent = "47",
-                imageUrl = "https://i.pinimg.com/originals/24/6d/5d/246d5dbabe52ebd7ce807f2f293ee892.jpg"
-            )
+        viewModelScope.launch {
+            val matches: List<MatchItemViewState> = withContext(Dispatchers.IO) {
+                matchesRepository.getMatches().toMatchesViewState()
+            }
+            _viewStates.postValue(matches)
         }
+    }
+}
+
+fun MatchesResponse.toMatchesViewState(): List<MatchItemViewState> {
+    return data.map { data ->
+        MatchItemViewState(
+            username = data.username,
+            age = data.age.toString(),
+            city = data.location.city_name,
+            stateCode = data.state_code,
+            matchPercent = (data.match / 100).toString(),
+            imageUrl = data.photo.full_paths.large
+
+        )
     }
 }
 

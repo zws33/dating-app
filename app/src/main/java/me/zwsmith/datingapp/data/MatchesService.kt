@@ -1,5 +1,8 @@
 package me.zwsmith.datingapp.data
 
-interface MatchesService {
+import retrofit2.http.GET
 
+interface MatchesService {
+    @GET("matchSample.json")
+    suspend fun getMatches(): MatchesResponse
 }
