@@ -3,4 +3,6 @@
     <string name="special_blend">Special Blend</string>
     <string name="math_percent">Match %</string>
     <string name="bullet">\u2022</string>
+    <string name="location">%1$s, %2$s</string>
+    <string name="match_percent">%1$s Match</string>
 </resources>
