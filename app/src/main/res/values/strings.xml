@@ -2,4 +2,5 @@
     <string name="app_name">Dating App</string>
     <string name="special_blend">Special Blend</string>
     <string name="math_percent">Match %</string>
+    <string name="bullet">\u2022</string>
 </resources>
