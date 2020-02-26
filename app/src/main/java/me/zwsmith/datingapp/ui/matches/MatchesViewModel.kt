@@ -12,12 +12,13 @@ import me.zwsmith.datingapp.domain.Repository
 
 class MatchesViewModel(private val matchesRepository: Repository) : ViewModel() {
 
-    val viewStates: LiveData<List<MatchItemViewState>> get() = _viewStates
-    private val _viewStates = MutableLiveData<List<MatchItemViewState>>()
+    val viewStates: LiveData<MatchesViewState> get() = _viewStates
+    private val _viewStates = MutableLiveData<MatchesViewState>()
 
     fun loadMatches() {
         viewModelScope.launch {
-            val matches: List<MatchItemViewState> = withContext(Dispatchers.IO) {
+            _viewStates.postValue(MatchesViewState.LOADING)
+            val matches: MatchesViewState = withContext(Dispatchers.IO) {
                 matchesRepository.getMatches().toMatchesViewState()
             }
             _viewStates.postValue(matches)
@@ -25,25 +26,18 @@ class MatchesViewModel(private val matchesRepository: Repository) : ViewModel() 
     }
 }
 
-fun MatchesResponse.toMatchesViewState(): List<MatchItemViewState> {
-    return data.map { data ->
+fun MatchesResponse.toMatchesViewState(): MatchesViewState {
+    val matches: List<MatchItemViewState> = data.map { data ->
         MatchItemViewState(
             username = data.username,
             age = data.age.toString(),
-            city = data.location.city_name,
-            stateCode = data.state_code,
+            city = data.location.cityName,
+            stateCode = data.stateCode,
             matchPercent = (data.match / 100).toString(),
-            imageUrl = data.photo.full_paths.large
-
+            imageUrl = data.photo.fullPaths.large
         )
     }
+
+    return MatchesViewState(isProgressVisible = data.isEmpty(), matches = matches)
 }
 
-data class MatchItemViewState(
-    val username: String,
-    val age: String,
-    val city: String,
-    val stateCode: String,
-    val matchPercent: String,
-    val imageUrl: String
-)
