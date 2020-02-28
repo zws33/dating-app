@@ -2,42 +2,41 @@ package me.zwsmith.datingapp.ui.matches
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import me.zwsmith.datingapp.data.MatchesResponse
+import me.zwsmith.datingapp.domain.Match
 import me.zwsmith.datingapp.domain.Repository
 
 class MatchesViewModel(private val matchesRepository: Repository) : ViewModel() {
 
-    val viewStates: LiveData<MatchesViewState> get() = _viewStates
+    val viewStates: LiveData<MatchesViewState> = Transformations.map(matchesRepository.selectedMatches) {
+        it.toMatchesViewState()
+    }
     private val _viewStates = MutableLiveData<MatchesViewState>()
 
     fun loadMatches() {
         viewModelScope.launch {
             _viewStates.postValue(MatchesViewState.LOADING)
-            val matches: MatchesViewState = withContext(Dispatchers.IO) {
-                matchesRepository.getMatches().toMatchesViewState()
-            }
-            _viewStates.postValue(matches)
+            matchesRepository.getMatches()
         }
     }
 }
 
-fun MatchesResponse.toMatchesViewState(): MatchesViewState {
-    val matches: List<MatchItemViewState> = data.map { data ->
+fun List<Pair<Match, Boolean>>.toMatchesViewState(): MatchesViewState {
+    val matches: List<MatchItemViewState> = map { data ->
         MatchItemViewState(
-            username = data.username,
-            age = data.age.toString(),
-            city = data.location.cityName,
-            stateCode = data.stateCode,
-            matchPercent = (data.match / 100).toString(),
-            imageUrl = data.photo.fullPaths.large
+            username = data.first.username,
+            age = data.first.age.toString(),
+            city = data.first.location.cityName,
+            stateCode = data.first.stateCode,
+            matchPercent = (data.first.match / 100).toString(),
+            imageUrl = data.first.photo.fullPaths.large,
+            isSelected = data.second
         )
     }
 
-    return MatchesViewState(isProgressVisible = data.isEmpty(), matches = matches)
+    return MatchesViewState(isProgressVisible = this.isEmpty(), matches = matches)
 }
 

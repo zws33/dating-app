@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import me.zwsmith.datingapp.R
@@ -40,6 +41,7 @@ class MatchListAdapter(
     override fun onBindViewHolder(holder: MatchItem, position: Int) {
         val viewState: MatchItemViewState = matchesData[position]
         with(holder) {
+            holder.itemView.setBackgroundColor(getSelectionStatusColor(viewState))
             username.text = viewState.username
             age.text = viewState.age
             location.text = getLocationString(viewState)
@@ -54,6 +56,13 @@ class MatchListAdapter(
                 .placeholder(R.drawable.ic_person)
                 .into(profilePhoto)
         }
+    }
+
+    private fun getSelectionStatusColor(viewState: MatchItemViewState): Int {
+        return ContextCompat.getColor(
+            context,
+            if (viewState.isSelected) R.color.colorAccent else R.color.yellow
+        )
     }
 
     private fun getLocationString(viewState: MatchItemViewState) =

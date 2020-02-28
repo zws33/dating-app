@@ -6,7 +6,8 @@ data class MatchItemViewState(
     val city: String,
     val stateCode: String,
     val matchPercent: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val isSelected: Boolean
 )
 
 data class MatchesViewState(
