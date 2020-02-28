@@ -3,7 +3,7 @@
     android:fromDegrees="0"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:toDegrees="1080" >
+    android:toDegrees="1440" >
 
     <shape
         android:innerRadiusRatio="3"
@@ -18,7 +18,7 @@
         <gradient
             android:angle="0"
             android:endColor="@color/colorPrimary"
-            android:startColor="@color/colorAccent"
+            android:startColor="@color/background"
             android:type="sweep"
             android:useLevel="false" />
 

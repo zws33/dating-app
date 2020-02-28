@@ -109,7 +109,7 @@ class MatchListAdapter(
             }
             picasso
                 .load(viewState.imageUrl)
-                .resize(400, 400)
+                .fit()
                 .centerCrop()
                 .placeholder(R.drawable.ic_person)
                 .into(profilePhoto)
