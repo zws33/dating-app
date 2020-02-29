@@ -16,7 +16,9 @@ class MatchPercentViewModel(private val matchesRepository: Repository) : ViewMod
             matchesRepository.availableMatches,
             matchesRepository.likedMatchIds
         ) { matches, ids ->
-            val likedMatches = matches.filter { ids.contains(it.userid) }.sortedBy { it.match }
+            val likedMatches = matches
+                .filter { ids.contains(it.userid) }
+                .sortedByDescending { it.match }
             getMatchPercentViewState(likedMatches, ::updateLiked)
         }
 
