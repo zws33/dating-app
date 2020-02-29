@@ -41,7 +41,8 @@ class MatchListAdapter(
     override fun onBindViewHolder(holder: MatchItem, position: Int) {
         val viewState: MatchItemViewState = matchesData[position]
         with(holder) {
-            holder.itemView.setBackgroundColor(getSelectionStatusColor(viewState))
+            itemView.setBackgroundColor(getSelectionStatusColor(viewState))
+            itemView.setOnClickListener { matchesData[position].onClick() }
             username.text = viewState.username
             age.text = viewState.age
             location.text = getLocationString(viewState)
@@ -61,7 +62,7 @@ class MatchListAdapter(
     private fun getSelectionStatusColor(viewState: MatchItemViewState): Int {
         return ContextCompat.getColor(
             context,
-            if (viewState.isSelected) R.color.colorAccent else R.color.yellow
+            if (viewState.isSelected) R.color.yellow else R.color.colorAccent
         )
     }
 

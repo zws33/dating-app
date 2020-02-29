@@ -5,7 +5,8 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import me.zwsmith.datingapp.data.MatchesService
 import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.domain.RepositoryImpl
-import me.zwsmith.datingapp.ui.matches.MatchesViewModel
+import me.zwsmith.datingapp.ui.matches.matchpercent.MatchPercentViewModel
+import me.zwsmith.datingapp.ui.matches.specialblend.SpecialBlendViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -21,7 +22,16 @@ val mainModule = module {
     single { matchesService(get()) }
     single<Repository> { RepositoryImpl(get()) }
 
-    viewModel { MatchesViewModel(get()) }
+    viewModel {
+        SpecialBlendViewModel(
+            get()
+        )
+    }
+    viewModel {
+        MatchPercentViewModel(
+            get()
+        )
+    }
 }
 
 private fun client(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {

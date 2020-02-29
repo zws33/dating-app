@@ -1,5 +1,10 @@
 package me.zwsmith.datingapp.ui.matches
 
+data class MatchesViewState(
+    val isProgressVisible: Boolean,
+    val matches: List<MatchItemViewState>
+)
+
 data class MatchItemViewState(
     val username: String,
     val age: String,
@@ -7,17 +12,6 @@ data class MatchItemViewState(
     val stateCode: String,
     val matchPercent: String,
     val imageUrl: String,
-    val isSelected: Boolean
+    val isSelected: Boolean,
+    val onClick: () -> Unit
 )
-
-data class MatchesViewState(
-    val isProgressVisible: Boolean,
-    val matches: List<MatchItemViewState>
-) {
-    companion object {
-        val LOADING = MatchesViewState(
-            isProgressVisible = true,
-            matches = emptyList()
-        )
-    }
-}

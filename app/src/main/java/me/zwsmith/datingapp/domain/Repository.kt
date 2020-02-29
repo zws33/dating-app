@@ -1,7 +1,6 @@
 package me.zwsmith.datingapp.domain
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,57 +8,53 @@ import me.zwsmith.datingapp.data.MatchDto
 import me.zwsmith.datingapp.data.MatchesService
 
 interface Repository {
-    suspend fun getMatches()
-    val matches: LiveData<List<Match>>
-    val selectedMatches: LiveData<List<Pair<Match, Boolean>>>
+    suspend fun refreshMatches()
+    fun updateLiked(userId: String)
+    val availableMatches: LiveData<List<Match>>
+    val likedMatchIds: LiveData<List<String>>
 }
 
 class RepositoryImpl(private val matchesService: MatchesService) : Repository {
 
-    override val matches: LiveData<List<Match>> get() = _matches
-    private val _matches = MutableLiveData<List<Match>>()
+    override val availableMatches: LiveData<List<Match>> get() = _availableMatches
+    private val _availableMatches = MutableLiveData<List<Match>>().apply { value = emptyList() }
 
-    private val _selected = MutableLiveData<List<String>>().apply { emptyList<String>() }
+    override val likedMatchIds: LiveData<List<String>> get() = _likedMatchIds
+    private val _likedMatchIds = MutableLiveData<List<String>>().apply { value = emptyList() }
 
-    override val selectedMatches: LiveData<List<Pair<Match, Boolean>>> =
-        zip(_matches, _selected) { matches, selections ->
-            matches.map { it to !selections.contains(it.userid) }
-        }
+    private var lastRefresh: Long = -1
 
-    override suspend fun getMatches() {
-        val matchesResponse = withContext(Dispatchers.IO) {
-            matchesService.getMatches()
-        }
-        _selected.postValue(emptyList())
-        _matches.postValue(matchesResponse.data.map { it.toMatch() })
-    }
-}
-
-fun <T, R, U> zip(
-    sourceOne: LiveData<T>,
-    sourceTwo: LiveData<R>,
-    transformation: (T, R) -> U
-): LiveData<U> {
-    return MediatorLiveData<U>().apply {
-        var lastA: T? = null
-        var lastB: R? = null
-
-        fun update() {
-            val localLastT = lastA
-            val localLastR = lastB
-            if (localLastT != null && localLastR != null) {
-                this.value = transformation(localLastT, localLastR)
+    override suspend fun refreshMatches() {
+        val currentTime: Long = currentTimeInSeconds()
+        val timeSinceRefresh: Long = lastRefresh - currentTime
+        if (_availableMatches.value.isNullOrEmpty() || timeSinceRefresh > MAX_TIME_SINCE_REFRESH) {
+            lastRefresh = currentTime
+            val matches: List<Match> = withContext(Dispatchers.IO) {
+                matchesService.getMatches().data.map { it.toMatch() }
             }
+            _availableMatches.postValue(matches)
         }
+    }
 
-        addSource(sourceOne) {
-            lastA = it
-            update()
-        }
-        addSource(sourceTwo) {
-            lastB = it
-            update()
-        }
+    private fun currentTimeInSeconds(): Long {
+        return System.currentTimeMillis() / MILLIS_PER_SECOND
+    }
+
+    override fun updateLiked(userId: String) {
+        val newLiked: List<String> = _likedMatchIds.value?.let { selectedMatchIds ->
+            if (selectedMatchIds.contains(userId)) {
+                selectedMatchIds.filterNot { it == userId }
+            } else {
+                selectedMatchIds + userId
+            }
+        } ?: emptyList()
+
+        _likedMatchIds.postValue(newLiked)
+    }
+
+    companion object {
+        const val MILLIS_PER_SECOND = 1000L
+        const val MAX_TIME_SINCE_REFRESH = 300
     }
 }
 

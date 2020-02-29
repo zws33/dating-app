@@ -1,4 +1,4 @@
-package me.zwsmith.datingapp.ui.matches
+package me.zwsmith.datingapp.ui.matches.specialblend
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,22 +11,24 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.zwsmith.datingapp.R
+import me.zwsmith.datingapp.ui.matches.MatchListAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-/**
- * A placeholder fragment containing a simple view.
- */
-class MatchesFragment : Fragment() {
+class SpecialBlendFragment : Fragment() {
 
-    private val matchesViewModel: MatchesViewModel by viewModel()
+    private val specialBlendViewModel: SpecialBlendViewModel by viewModel()
 
-    private val matchesListAdapter: MatchListAdapter by lazy { MatchListAdapter(requireContext()) }
+    private val matchesListAdapter: MatchListAdapter by lazy {
+        MatchListAdapter(
+            requireContext()
+        )
+    }
     private lateinit var matchesList: RecyclerView
     private lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        matchesViewModel.loadMatches()
+        specialBlendViewModel.refreshMatches()
     }
 
     override fun onCreateView(
@@ -47,22 +49,16 @@ class MatchesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        matchesViewModel.viewStates.observe(viewLifecycleOwner, Observer { viewState ->
+        specialBlendViewModel.specialBlendViewStates.observe(viewLifecycleOwner, Observer { viewState ->
             progressBar.isVisible = viewState.isProgressVisible
             matchesListAdapter.matchesData = viewState.matches
         })
     }
 
     companion object {
-        private const val ARG_SECTION_NUMBER = "section_number"
-
         @JvmStatic
-        fun newInstance(sectionNumber: Int): MatchesFragment {
-            return MatchesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
+        fun newInstance(): SpecialBlendFragment {
+            return SpecialBlendFragment()
         }
     }
 }

@@ -3,15 +3,18 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorAccent"
-    android:elevation="4dp"
-    android:layout_margin="8dp">
+    app:cardPreventCornerOverlap="true"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profile_photo_iv"
@@ -44,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/dot_tv"
+            app:layout_constraintEnd_toStartOf="@id/dot_tv"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +74,7 @@
             app:layout_constraintBaseline_toBaselineOf="@id/dot_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/dot_tv"
+            app:layout_constraintStart_toEndOf="@id/dot_tv"
             tools:text="Teaneck, NJ" />
 
         <TextView
