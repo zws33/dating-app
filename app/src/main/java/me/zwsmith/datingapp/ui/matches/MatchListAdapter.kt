@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -21,6 +22,7 @@ class MatchListAdapter(
         }
 
     class MatchItem(view: View) : RecyclerView.ViewHolder(view) {
+        val matchLayout: ConstraintLayout = view.findViewById(R.id.match_layout)
         val username: TextView = view.findViewById(R.id.username_tv)
         val age: TextView = view.findViewById(R.id.age_tv)
         val location: TextView = view.findViewById(R.id.location_tv)
@@ -41,7 +43,7 @@ class MatchListAdapter(
     override fun onBindViewHolder(holder: MatchItem, position: Int) {
         val viewState: MatchItemViewState = matchesData[position]
         with(holder) {
-            itemView.setBackgroundColor(getSelectionStatusColor(viewState))
+            matchLayout.setBackgroundColor(getSelectionStatusColor(viewState))
             itemView.setOnClickListener { matchesData[position].onClick() }
             username.text = viewState.username
             age.text = viewState.age
