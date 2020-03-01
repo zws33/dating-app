@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import me.zwsmith.datingapp.data.MatchDto
+import me.zwsmith.datingapp.data.Match
 import me.zwsmith.datingapp.data.MatchesService
 
 interface Repository {
@@ -30,7 +30,7 @@ class RepositoryImpl(private val matchesService: MatchesService) : Repository {
         if (_availableMatches.value.isNullOrEmpty() || timeSinceRefresh > MAX_TIME_SINCE_REFRESH) {
             lastRefresh = currentTime
             val matches: List<Match> = withContext(Dispatchers.IO) {
-                matchesService.getMatches().data.map { it.toMatch() }
+                matchesService.getMatches().data
             }
             _availableMatches.postValue(matches)
         }
@@ -56,33 +56,5 @@ class RepositoryImpl(private val matchesService: MatchesService) : Repository {
         const val MILLIS_PER_SECOND = 1000L
         const val MAX_TIME_SINCE_REFRESH = 300
     }
-}
-
-fun MatchDto.toMatch(): Match {
-    return Match(
-        age = this.age,
-        cityName = this.cityName,
-        countryCode = this.countryCode,
-        countryName = this.countryName,
-        enemy = this.enemy,
-        friend = this.friend,
-        gender = this.gender,
-        genderTags = this.genderTags,
-        is_online = this.is_online,
-        lastContactTime = this.lastContactTime,
-        lastLogin = this.lastLogin,
-        liked = this.liked,
-        location = this.location,
-        match = this.match,
-        orientation = this.orientation,
-        orientationTags = this.orientationTags,
-        photo = this.photo,
-        relative = this.relative,
-        stateCode = this.stateCode,
-        stateName = this.stateName,
-        stoplightColor = this.stoplightColor,
-        userid = this.userid,
-        username = this.username
-    )
 }
 

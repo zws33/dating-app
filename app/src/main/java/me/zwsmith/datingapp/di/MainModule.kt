@@ -22,16 +22,8 @@ val mainModule = module {
     single { matchesService(get()) }
     single<Repository> { RepositoryImpl(get()) }
 
-    viewModel {
-        SpecialBlendViewModel(
-            get()
-        )
-    }
-    viewModel {
-        MatchPercentViewModel(
-            get()
-        )
-    }
+    viewModel { SpecialBlendViewModel(get()) }
+    viewModel { MatchPercentViewModel(get()) }
 }
 
 private fun client(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {

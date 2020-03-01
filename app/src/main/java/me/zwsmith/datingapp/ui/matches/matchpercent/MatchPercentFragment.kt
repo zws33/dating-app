@@ -45,8 +45,9 @@ class MatchPercentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         matchesViewModel.matchPercentViewStates.observe(viewLifecycleOwner, Observer { viewState ->
-            progressBar.isVisible = viewState.isProgressVisible
             matchesListAdapter.matchesData = viewState.matches
+            progressBar.isVisible = viewState.isProgressVisible
+            matchesList.isVisible = !viewState.isProgressVisible
         })
     }
 

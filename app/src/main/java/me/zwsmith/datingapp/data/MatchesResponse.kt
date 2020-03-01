@@ -3,12 +3,12 @@ package me.zwsmith.datingapp.data
 import com.squareup.moshi.Json
 
 data class MatchesResponse(
-    val data: List<MatchDto>,
+    val data: List<Match>,
     val paging: Paging,
     @Json(name = "total_matches") val totalMatches: Int
 )
 
-data class MatchDto(
+data class Match(
     val age: Int,
     @Json(name = "city_name") val cityName: String,
     @Json(name = "country_code") val countryCode: String,
