@@ -49,10 +49,7 @@ class MatchListAdapter(
             age.text = viewState.age
             location.text = getLocationString(viewState)
             matchPercent.text = context.getString(R.string.match_percent, viewState.matchPercent)
-            val picasso = Picasso.get().apply {
-                isLoggingEnabled = true
-            }
-            picasso
+            Picasso.get()
                 .load(viewState.imageUrl)
                 .fit()
                 .centerCrop()
