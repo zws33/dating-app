@@ -12,6 +12,8 @@ data class MatchItemViewState(
     val stateCode: String,
     val matchPercent: String,
     val imageUrl: String,
-    val isSelected: Boolean,
-    val onClick: () -> Unit
+    val isYellow: Boolean,
+    val isCancelVisible: Boolean,
+    val onClick: () -> Unit,
+    val onCancelClick: () -> Unit
 )

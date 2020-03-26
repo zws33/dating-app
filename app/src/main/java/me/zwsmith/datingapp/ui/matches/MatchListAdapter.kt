@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import me.zwsmith.datingapp.R
@@ -28,6 +30,7 @@ class MatchListAdapter(
         val location: TextView = view.findViewById(R.id.location_tv)
         val matchPercent: TextView = view.findViewById(R.id.match_percent_tv)
         val profilePhoto: AppCompatImageView = view.findViewById(R.id.profile_photo_iv)
+        val cancelButton: Button = view.findViewById(R.id.cancel_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MatchItem {
@@ -44,6 +47,8 @@ class MatchListAdapter(
         val viewState: MatchItemViewState = matchesData[position]
         with(holder) {
             matchLayout.setBackgroundColor(getSelectionStatusColor(viewState))
+            cancelButton.isVisible = viewState.isCancelVisible
+            cancelButton.setOnClickListener { viewState.onCancelClick() }
             itemView.setOnClickListener { matchesData[position].onClick() }
             username.text = viewState.username
             age.text = viewState.age
@@ -61,7 +66,7 @@ class MatchListAdapter(
     private fun getSelectionStatusColor(viewState: MatchItemViewState): Int {
         return ContextCompat.getColor(
             context,
-            if (viewState.isSelected) R.color.yellow else R.color.colorAccent
+            if (viewState.isYellow) R.color.yellow else R.color.colorAccent
         )
     }
 
