@@ -4,9 +4,11 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "me.zwsmith.datingapp"
         minSdkVersion 21
@@ -20,6 +22,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled = true
     }
 
     compileOptions {
@@ -38,16 +43,16 @@ dependencies {
 
     // Android
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "androidx.fragment:fragment:1.2.2"
-    implementation "androidx.fragment:fragment-ktx:1.2.2"
+    implementation "androidx.fragment:fragment:1.2.4"
+    implementation "androidx.fragment:fragment-ktx:1.2.4"
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // Networking
-    implementation "com.squareup.okhttp3:okhttp:4.2.1"
-    implementation "com.squareup.okhttp3:logging-interceptor:4.2.1"
+    implementation "com.squareup.okhttp3:okhttp:4.4.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
     implementation "com.squareup.retrofit2:retrofit:2.7.1"
 
     // Serialization
@@ -70,7 +75,7 @@ dependencies {
     // Koin AndroidX ViewModel features
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
