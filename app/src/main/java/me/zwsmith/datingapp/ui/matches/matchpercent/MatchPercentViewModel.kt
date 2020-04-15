@@ -2,9 +2,9 @@ package me.zwsmith.datingapp.ui.matches.matchpercent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.common.zip
 import me.zwsmith.datingapp.data.Match
-import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.ui.matches.MatchItemViewState
 import me.zwsmith.datingapp.ui.matches.MatchesViewState
 

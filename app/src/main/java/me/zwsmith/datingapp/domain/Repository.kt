@@ -85,7 +85,7 @@ class RepositoryImpl(private val matchesService: MatchesService) : Repository {
     companion object {
         const val MILLIS_PER_SECOND = 1000L
         const val MAX_TIME_SINCE_REFRESH = 300
-        const val DELAY_IN_SECONDS = 5
+        const val DELAY_IN_SECONDS = 2
     }
 }
 

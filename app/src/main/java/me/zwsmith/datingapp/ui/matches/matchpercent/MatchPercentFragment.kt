@@ -19,9 +19,7 @@ class MatchPercentFragment : Fragment() {
     private val matchesViewModel: MatchPercentViewModel by viewModel()
 
     private val matchesListAdapter: MatchListAdapter by lazy {
-        MatchListAdapter(
-            requireContext()
-        )
+        MatchListAdapter()
     }
     private lateinit var matchesList: RecyclerView
     private lateinit var progressBar: ProgressBar
