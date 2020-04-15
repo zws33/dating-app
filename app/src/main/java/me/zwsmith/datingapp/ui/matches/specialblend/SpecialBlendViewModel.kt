@@ -13,13 +13,12 @@ import me.zwsmith.datingapp.ui.matches.MatchesViewState
 
 class SpecialBlendViewModel(private val matchesRepository: Repository) : ViewModel() {
 
-    val specialBlendViewStates: LiveData<MatchesViewState> =
-        zip(
-            matchesRepository.availableMatches,
-            matchesRepository.likes
-        ) { matches, likes ->
-            getSpecialBlendViewState(matches, likes, ::updateLiked, ::cancelLiked)
-        }
+    val specialBlendViewStates: LiveData<MatchesViewState> = zip(
+        matchesRepository.availableMatches,
+        matchesRepository.likes
+    ) { matches, likes ->
+        getSpecialBlendViewState(matches, likes, ::updateLiked, ::cancelLiked)
+    }
 
     fun refreshMatches() {
         viewModelScope.launch {
