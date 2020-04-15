@@ -16,4 +16,12 @@ data class MatchItemViewState(
     val isCancelVisible: Boolean,
     val onClick: () -> Unit,
     val onCancelClick: () -> Unit
-)
+) {
+    fun onClick() {
+        onClick.invoke()
+    }
+
+    fun onCancelClick() {
+        onCancelClick.invoke()
+    }
+}

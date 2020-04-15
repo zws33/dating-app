@@ -1,115 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.card.MaterialCardView
-        style="@style/Widget.MaterialComponents.CardView"
+    <data>
+
+        <variable
+            name="viewState"
+            type="me.zwsmith.datingapp.ui.matches.MatchItemViewState" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        app:cardPreventCornerOverlap="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/match_layout"
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.MaterialComponents.CardView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="4dp"
+            app:cardPreventCornerOverlap="true">
 
-            <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                app:layout_constraintBottom_toBottomOf="@id/match_layout"
-                app:layout_constraintEnd_toEndOf="@id/match_layout"
-                app:layout_constraintStart_toStartOf="@id/match_layout"
-                app:layout_constraintTop_toTopOf="@id/match_layout"
-                android:visibility="gone"/>
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/profile_photo_iv"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/match_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxHeight="400dp"
-                android:src="@drawable/ic_launcher_background"
-                app:layout_constraintBottom_toTopOf="@id/username_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                app:matchItemBackgroundColor="@{viewState.isYellow}"
+                android:onClick="@{() -> viewState.onClick()}"
+                >
 
-            <TextView
-                android:id="@+id/username_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/age_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profile_photo_iv"
-                tools:text="asianbluedust" />
+                <Button
+                    android:id="@+id/cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel"
+                    app:isVisible="@{viewState.isCancelVisible}"
+                    android:onClick="@{() -> viewState.onCancelClick()}"
+                    app:layout_constraintBottom_toBottomOf="@id/match_layout"
+                    app:layout_constraintEnd_toEndOf="@id/match_layout"
+                    app:layout_constraintStart_toStartOf="@id/match_layout"
+                    app:layout_constraintTop_toTopOf="@id/match_layout" />
 
-            <TextView
-                android:id="@+id/age_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@id/dot_tv"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/username_tv"
-                tools:text="asianbluedust" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/profile_photo_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:matchItemImageResource="@{viewState.imageUrl}"
+                    android:src="@drawable/ic_launcher_background"
+                    app:layout_constraintBottom_toTopOf="@id/username_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                     />
 
-            <TextView
-                android:id="@+id/dot_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/bullet"
-                android:textSize="18sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
-                app:layout_constraintEnd_toStartOf="@id/location_tv"
-                app:layout_constraintStart_toEndOf="@id/age_tv" />
+                <TextView
+                    android:id="@+id/username_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="@{viewState.username}"
+                    app:layout_constraintBottom_toTopOf="@id/age_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profile_photo_iv"
+                    tools:text="asianbluedust" />
 
-            <TextView
-                android:id="@+id/location_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/dot_tv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@id/dot_tv"
-                tools:text="Teaneck, NJ" />
+                <TextView
+                    android:id="@+id/age_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="18sp"
+                    android:text="@{viewState.age}"
+                    app:layout_constraintEnd_toStartOf="@id/dot_tv"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/username_tv"
+                    tools:text="asianbluedust" />
 
-            <TextView
-                android:id="@+id/match_percent_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/age_tv"
-                tools:text="47% Match" />
+                <TextView
+                    android:id="@+id/dot_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/bullet"
+                    android:textSize="18sp"
+                    app:layout_constraintBaseline_toBaselineOf="@id/age_tv"
+                    app:layout_constraintEnd_toStartOf="@id/location_tv"
+                    app:layout_constraintStart_toEndOf="@id/age_tv" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/location_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    app:city="@{viewState.city}"
+                    app:stateCode="@{viewState.stateCode}"
+                    app:layout_constraintBaseline_toBaselineOf="@id/dot_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@id/dot_tv"
+                    tools:text="Teaneck, NJ" />
+
+                <TextView
+                    android:id="@+id/match_percent_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:matchItemMatchPercentText="@{viewState.matchPercent}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/age_tv"
+                    tools:text="47% Match" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
+</layout>

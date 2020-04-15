@@ -22,7 +22,7 @@ class SpecialBlendFragment : Fragment() {
 
     private val specialBlendViewModel: SpecialBlendViewModel by viewModel()
 
-    private val matchesListAdapter: MatchListAdapter by lazy { MatchListAdapter(requireContext()) }
+    private val matchesListAdapter: MatchListAdapter by lazy { MatchListAdapter() }
     private lateinit var matchesList: RecyclerView
     private lateinit var progressBar: ProgressBar
 
