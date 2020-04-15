@@ -13,8 +13,8 @@ fun isVisible(view: View, isVisible: Boolean) {
     view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
-@BindingAdapter("matchItemBackgroundColor")
-fun matchItemBackgroundColor(view: ViewGroup, isYellow: Boolean) {
+@BindingAdapter("useYellowBackgroundColor")
+fun useYellowBackgroundColor(view: ViewGroup, isYellow: Boolean) {
     view.setBackgroundResource(if (isYellow) R.color.yellow else R.color.colorAccent)
 }
 
