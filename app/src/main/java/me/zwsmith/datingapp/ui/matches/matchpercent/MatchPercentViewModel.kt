@@ -2,9 +2,9 @@ package me.zwsmith.datingapp.ui.matches.matchpercent
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.common.zip
 import me.zwsmith.datingapp.data.Match
+import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.ui.matches.MatchItemViewState
 import me.zwsmith.datingapp.ui.matches.MatchesViewState
 
@@ -14,10 +14,10 @@ class MatchPercentViewModel(private val matchesRepository: Repository) : ViewMod
     val matchPercentViewStates: LiveData<MatchesViewState> =
         zip(
             matchesRepository.availableMatches,
-            matchesRepository.likedMatchIds
-        ) { matches, ids ->
+            matchesRepository.likes
+        ) { matches, likes ->
             val likedMatches = matches
-                .filter { ids.contains(it.userid) }
+                .filter { likes.map { like -> like.id }.contains(it.userid) }
                 .sortedByDescending { it.match }
             getMatchPercentViewState(likedMatches, ::updateLiked)
         }
@@ -38,8 +38,10 @@ class MatchPercentViewModel(private val matchesRepository: Repository) : ViewMod
                 stateCode = matchData.stateCode,
                 matchPercent = (matchData.match / 100).toString(),
                 imageUrl = matchData.photo.fullPaths.large,
-                isSelected = true,
-                onClick = { onClick(matchData.userid) }
+                isYellow = true,
+                isCancelVisible = false,
+                onClick = { onClick(matchData.userid) },
+                onCancelClick = { }
             )
         }
 

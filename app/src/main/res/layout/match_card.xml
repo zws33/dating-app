@@ -24,6 +24,17 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent">
 
+            <Button
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="@id/match_layout"
+                app:layout_constraintEnd_toEndOf="@id/match_layout"
+                app:layout_constraintStart_toStartOf="@id/match_layout"
+                app:layout_constraintTop_toTopOf="@id/match_layout"
+                android:visibility="gone"/>
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/profile_photo_iv"
                 android:layout_width="match_parent"

@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.common.zip
 import me.zwsmith.datingapp.data.Match
+import me.zwsmith.datingapp.domain.Like
+import me.zwsmith.datingapp.domain.Repository
 import me.zwsmith.datingapp.ui.matches.MatchItemViewState
 import me.zwsmith.datingapp.ui.matches.MatchesViewState
 
@@ -15,9 +16,9 @@ class SpecialBlendViewModel(private val matchesRepository: Repository) : ViewMod
     val specialBlendViewStates: LiveData<MatchesViewState> =
         zip(
             matchesRepository.availableMatches,
-            matchesRepository.likedMatchIds
-        ) { matches, ids ->
-            getSpecialBlendViewState(matches, ids, ::updateLiked)
+            matchesRepository.likes
+        ) { matches, likes ->
+            getSpecialBlendViewState(matches, likes, ::updateLiked, ::cancelLiked)
         }
 
     fun refreshMatches() {
@@ -30,12 +31,19 @@ class SpecialBlendViewModel(private val matchesRepository: Repository) : ViewMod
         matchesRepository.updateLiked(userId)
     }
 
+    private fun cancelLiked(userId: String) {
+        matchesRepository.cancelLiked(userId)
+    }
+
     private fun getSpecialBlendViewState(
         list: List<Match>,
-        likedIds: List<String>,
-        onClick: (String) -> Unit
+        likes: List<Like>,
+        onClick: (String) -> Unit,
+        onCancelClick: (String) -> Unit
     ): MatchesViewState {
         val matches: List<MatchItemViewState> = list.map { matchData ->
+            val like: Like? = likes.firstOrNull { it.id == matchData.userid}
+
             MatchItemViewState(
                 username = matchData.username,
                 age = matchData.age.toString(),
@@ -43,8 +51,10 @@ class SpecialBlendViewModel(private val matchesRepository: Repository) : ViewMod
                 stateCode = matchData.stateCode,
                 matchPercent = (matchData.match / 100).toString(),
                 imageUrl = matchData.photo.fullPaths.large,
-                isSelected = likedIds.contains(matchData.userid),
-                onClick = { onClick(matchData.userid) }
+                isYellow = like?.isPending == false,
+                isCancelVisible = like?.isPending == true,
+                onClick = { onClick(matchData.userid) },
+                onCancelClick = { onCancelClick(matchData.userid) }
             )
         }
 
